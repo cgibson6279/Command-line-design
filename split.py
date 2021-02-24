@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 """
-    Using the argparse module, build a Python command-line tool which takes four arguments:
-    input, train, dev, and test. The program should:
+split.py
 
-    1. Read all of the input data in using the above snippet.
-    2. Split the data into an 80% training set, 10% development set, and 10% test set.
-    3. Write the training set to the train path.
-    4. Write the develoment set to the dev path.
-    5. Write the testing set to the test path.
+    split.py splits conll2000.tag dataset into train, dev, and test sets and writes those sets to
+    train.tag, dev.tag, and test.tag respectively. Data is randomly shuffled before split, and the shuffle is seeded
+    at 272.
+
+    train.tag contains 80% of the data
+    dev.tag contains 10% of the data
+    test.tag contains 10% of the data
 """
 
 import argparse
@@ -30,7 +31,7 @@ def read_tags(path: str) -> Iterator[List[List[str]]]:
     if lines:
         yield lines
 
-def test_train_split(data, seed: int):
+def test_train_split(data:List[List[List[str]]], seed: int) -> Tuple[List[List[List[str]]], List[List[List[str]]], List[List[List[str]]]]:
     '''
     :param data:
           Data = set of the format list of list of list of strings
@@ -52,7 +53,7 @@ def test_train_split(data, seed: int):
 
     return train, dev, test
 
-def get_metadata(data: List[List[str]]) -> Tuple[int,int]:
+def get_metadata(data: List[List[List[str]]]) -> Tuple[int,int]:
     sents = 0
     tokens = 0
 
@@ -63,7 +64,7 @@ def get_metadata(data: List[List[str]]) -> Tuple[int,int]:
 
     return sents, tokens
 
-def write_tags(data: List[List[str]], output_path: str) -> None:
+def write_tags(data: List[List[List[str]]], output_path: str) -> None:
     '''
     :param data:
         List of sent strings containing lists of words
@@ -73,14 +74,14 @@ def write_tags(data: List[List[str]], output_path: str) -> None:
         None
     '''
 
-    with open(output_path, 'w', encoding = 'utf-8') as output_path:
+    with open(output_path, 'w', encoding = 'utf-8') as out_path:
         #get word counts and write data to file
         for sent in data:
-            for word in sent:
+            for token in sent:
                 #convert list to string
-                word = ' '.join(word)
+                word = ' '.join(token)
                 #write word to file
-                output_path.write(f"{word}\n")
+                out_path.write(f"{word}\n")
 
 
 def main(args: argparse.Namespace) -> None:
@@ -96,7 +97,7 @@ def main(args: argparse.Namespace) -> None:
     write_tags(dev, args.dev)
     write_tags(test, args.test)
 
-    #print metadata about set
+    #log metadata about set
     train_sents, train_tokens = get_metadata(train)
     dev_sents, dev_tokens = get_metadata(dev)
     test_sents, test_tokens = get_metadata(test)
