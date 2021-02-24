@@ -12,6 +12,7 @@
 
 import argparse
 import random
+import logging
 
 from typing import Iterator, List, Tuple
 
@@ -64,7 +65,6 @@ def get_metadata(data: List[List[str]]) -> Tuple[int,int]:
 
 def write_tags(data: List[List[str]], output_path: str) -> None:
     '''
-
     :param data:
         List of sent strings containing lists of words
     :param output_path:
@@ -84,6 +84,7 @@ def write_tags(data: List[List[str]], output_path: str) -> None:
 
 
 def main(args: argparse.Namespace) -> None:
+
     #read in corpus from input
     corpus = list(read_tags(args.input))
 
@@ -100,20 +101,20 @@ def main(args: argparse.Namespace) -> None:
     dev_sents, dev_tokens = get_metadata(dev)
     test_sents, test_tokens = get_metadata(test)
 
-    print(f'Train sents: {train_sents}\nTrain tokens: {train_tokens}\n')
-    print(f'Dev sents: {dev_sents}\nDev tokens: {dev_tokens}\n')
-    print(f'Test sents: {test_sents}\nDev tokens: {test_tokens}\n')
+    logging.info(f'Train sents: {train_sents}\nTrain tokens: {train_tokens}\n')
+    logging.info(f'Dev sents: {dev_sents}\nDev tokens: {dev_tokens}\n')
+    logging.info(f'Test sents: {test_sents}\nDev tokens: {test_tokens}\n')
 
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
         description='Split some data in to train, dev split sets',
-        #epilog = f"length"
     )
     parser.add_argument('--seed', type=int, metavar='', required=True, help='Seed for random shuffle generation')
     parser.add_argument("input", type=str, metavar='', help='Read all of the input data')
     parser.add_argument('train', type=str, metavar='', help='Path for writing the training set')
     parser.add_argument('dev', type=str, metavar='', help='Path for writing the dev set')
     parser.add_argument('test', type=str, metavar='', help='Path for writing the test set')
+    logging.basicConfig(level=logging.INFO)
     namespace = parser.parse_args()
     main(namespace)
