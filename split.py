@@ -35,7 +35,9 @@ def read_tags(path: str) -> Iterator[List[List[str]]]:
 
 def test_train_split(
     data: List[List[List[str]]], seed: int
-) -> Tuple[List[List[List[str]]], List[List[List[str]]], List[List[List[str]]]]:
+) -> Tuple[
+    List[List[List[str]]], List[List[List[str]]], List[List[List[str]]]
+]:
     """
     :param data:
           Data = set of the format list of list of list of strings
