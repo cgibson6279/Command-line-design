@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-"""
-split.py
+"""split.py
 
     split.py splits conll2000.tag dataset into train, dev, and test sets and writes those sets to
     train.tag, dev.tag, and test.tag respectively. Data is randomly shuffled before split, and the shuffle is seeded
