@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 """split.py
 
-    split.py splits conll2000.tag dataset into train, dev, and test sets and writes those sets to
-    train.tag, dev.tag, and test.tag respectively. Data is randomly shuffled before split, and the shuffle is seeded
-    at 272.
+split.py splits conll2000.tag dataset into train, dev,
+and test sets and writes those sets to
+train.tag, dev.tag, and test.tag respectively.
+Data is randomly shuffled before split, and the shuffle is seeded
+at 272.
 
-    train.tag contains 80% of the data
-    dev.tag contains 10% of the data
-    test.tag contains 10% of the data
+train.tag contains 80% of the data
+dev.tag contains 10% of the data
+test.tag contains 10% of the data
 """
 
 import argparse
@@ -53,8 +55,8 @@ def test_train_split(
     random.Random(seed).shuffle(data)
     # split data into test, train,split
     train = data[0:train_sample]
-    dev = data[train_sample : train_sample + dev_sample]
-    test = data[train_sample + dev_sample :]
+    dev = data[train_sample: train_sample + dev_sample]
+    test = data[train_sample + dev_sample:]
 
     return train, dev, test
 
